@@ -7,15 +7,34 @@
 
 import SwiftUI
 
+enum Route: Hashable, CaseIterable {
+    case panGesture
+}
+
+extension Route {
+    var title: String {
+        switch self {
+        case .panGesture:
+            return String(localized: "Pan Gesture")
+        }
+    }
+}
+
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List(Route.allCases, id: \.self) { route in
+                NavigationLink(value: route) {
+                    Text(route.title)
+                }
+            }
+            .navigationDestination(for: Route.self) { route in
+                switch route {
+                case .panGesture:
+                    PanGestureView()
+                }
+            }
         }
-        .padding()
     }
 }
 

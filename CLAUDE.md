@@ -7,11 +7,20 @@
 - **Minimum Deployment**: iOS 18.0
 - **Package Manager**: Swift Package Manager
 
-## XcodeBuildMCP Integration
-**IMPORTANT**: This project uses XcodeBuildMCP for all Xcode operations.
-- Build: `mcp__xcodebuildmcp__build_sim_name_proj`
-- Test: `mcp__xcodebuildmcp__test_sim_name_proj`
-- Clean: `mcp__xcodebuildmcp__clean`
+## 🔍 Environment Adaptation
+
+This project supports two Claude development environments:
+- **Xcode 26.3+ Claude Agent SDK** - Uses Xcode built-in MCP tools
+- **Pure Claude Code** - Uses command line Claude Code
+
+### Environment Detection
+
+Judge the current environment by checking the `CLAUDE_CONFIG_DIR` environment variable:
+
+- ✅ **Contains `Xcode/CodingAssistant`** → Use configuration from [CLAUDE-XCODE.md](CLAUDE-XCODE.md)
+  - Example: `~/Library/Developer/Xcode/CodingAssistant/ClaudeAgentConfig`
+- ❌ **Does not contain or is another path** → Use configuration from [CLAUDE-PURE.md](CLAUDE-PURE.md)
+  - Example: `~/.config/claude` or other standard configuration paths
 
 ## Coding Standards
 

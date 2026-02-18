@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		16272EB12F45263B00FDF7D4 /* UIKitGesturesForSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 16272EB02F45263B00FDF7D4 /* UIKitGesturesForSwiftUI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		16272E8D2F4523D300FDF7D4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16272EB12F45263B00FDF7D4 /* UIKitGesturesForSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = UIKitGesturesForSwiftUIPlayground;
 			packageProductDependencies = (
+				16272EB02F45263B00FDF7D4 /* UIKitGesturesForSwiftUI */,
 			);
 			productName = UIKitGesturesForSwiftUIPlayground;
 			productReference = 16272E7F2F4523D100FDF7D4 /* UIKitGesturesForSwiftUIPlayground.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 16272E762F4523D100FDF7D4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				16272EAF2F45263B00FDF7D4 /* XCLocalSwiftPackageReference "../../UIKitGesturesForSwiftUI/UIKitGesturesForSwiftUI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 16272E802F4523D100FDF7D4 /* Products */;
 			projectDirPath = "";
@@ -578,6 +587,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		16272EAF2F45263B00FDF7D4 /* XCLocalSwiftPackageReference "../../UIKitGesturesForSwiftUI/UIKitGesturesForSwiftUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../UIKitGesturesForSwiftUI/UIKitGesturesForSwiftUI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		16272EB02F45263B00FDF7D4 /* UIKitGesturesForSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UIKitGesturesForSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 16272E772F4523D100FDF7D4 /* Project object */;
 }
