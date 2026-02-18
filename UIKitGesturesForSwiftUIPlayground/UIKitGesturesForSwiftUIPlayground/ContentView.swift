@@ -10,6 +10,7 @@ import SwiftUI
 enum Route: Hashable, CaseIterable {
     case panGesture
     case tapGesture
+    case longPressGesture
 }
 
 extension Route {
@@ -19,6 +20,8 @@ extension Route {
             return String(localized: "Pan Gesture")
         case .tapGesture:
             return String(localized: "Tap Gesture")
+        case .longPressGesture:
+            return String(localized: "Long Press Gesture")
         }
     }
 }
@@ -37,6 +40,8 @@ struct ContentView: View {
                     PanGestureView()
                 case .tapGesture:
                     TapGestureView()
+                case .longPressGesture:
+                    LongPressGestureView()
                 }
             }
         }
