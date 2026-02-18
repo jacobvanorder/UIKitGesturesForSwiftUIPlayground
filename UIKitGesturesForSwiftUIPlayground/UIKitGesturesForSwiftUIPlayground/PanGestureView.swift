@@ -104,7 +104,7 @@ struct PanGestureView: View {
             GesturePlayground(viewModel: viewModel)
             InfoPanel(viewModel: viewModel)
         }
-        .navigationTitle("Pan Gesture")
+        .navigationTitle(String(localized: "Pan Gesture"))
     }
 
     // MARK: - Configuration Section

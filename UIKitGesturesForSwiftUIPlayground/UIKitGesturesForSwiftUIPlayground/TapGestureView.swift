@@ -86,7 +86,7 @@ struct TapGestureView: View {
             GesturePlayground(viewModel: viewModel)
             EventLog(viewModel: viewModel)
         }
-        .navigationTitle("Tap Gesture")
+        .navigationTitle(String(localized: "Tap Gesture"))
     }
 
     // MARK: - Configuration Section
