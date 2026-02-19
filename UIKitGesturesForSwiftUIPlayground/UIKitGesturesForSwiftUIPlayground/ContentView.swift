@@ -14,6 +14,7 @@ enum Route: Hashable, CaseIterable {
     case swipeGesture
     case pinchGesture
     case rotationGesture
+    case transformGesture
 }
 
 extension Route {
@@ -31,6 +32,8 @@ extension Route {
             return String(localized: "Pinch Gesture")
         case .rotationGesture:
             return String(localized: "Rotation Gesture")
+        case .transformGesture:
+            return String(localized: "Transform Gesture")
         }
     }
 }
@@ -57,6 +60,8 @@ struct ContentView: View {
                     PinchGestureView()
                 case .rotationGesture:
                     RotationGestureView()
+                case .transformGesture:
+                    CustomTransformGestureView()
                 }
             }
         }
