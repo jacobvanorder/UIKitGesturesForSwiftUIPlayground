@@ -12,6 +12,7 @@ enum Route: Hashable, CaseIterable {
     case tapGesture
     case longPressGesture
     case swipeGesture
+    case pinchGesture
 }
 
 extension Route {
@@ -25,6 +26,8 @@ extension Route {
             return String(localized: "Long Press Gesture")
         case .swipeGesture:
             return String(localized: "Swipe Gesture")
+        case .pinchGesture:
+            return String(localized: "Pinch Gesture")
         }
     }
 }
@@ -47,6 +50,8 @@ struct ContentView: View {
                     LongPressGestureView()
                 case .swipeGesture:
                     SwipeGestureView()
+                case .pinchGesture:
+                    PinchGestureView()
                 }
             }
         }
