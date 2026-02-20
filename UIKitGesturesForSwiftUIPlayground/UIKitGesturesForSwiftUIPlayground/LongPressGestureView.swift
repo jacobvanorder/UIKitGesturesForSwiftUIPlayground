@@ -16,9 +16,8 @@ import UIKitGesturesForSwiftUI
 /// 2. **Gesture Playground** — a colored rectangle that responds to long press gestures.
 ///    The rectangle changes color to reflect the current gesture state:
 ///    yellow for began, green for changed, red for ended, and blue when idle.
-/// 3. **Event Log** — a scrolling list of gesture state transitions. Each entry shows a timestamp,
-///    the gesture state, touch location, and finger count. Entries automatically fade out and
-///    are removed after 3 seconds.
+/// 3. **Info Panel** — a read-only display of the current gesture state, touch location,
+///    and finger count, updated in real time during the gesture.
 struct LongPressGestureView: View {
 
     /// Represents the phase of a long press gesture lifecycle.
@@ -33,7 +32,7 @@ struct LongPressGestureView: View {
         case changed
         case ended
 
-        /// The color used to tint the rectangle and the event log label for this state.
+        /// The color used to tint the rectangle for this state.
         var color: Color {
             switch self {
             case .began: .yellow
@@ -55,31 +54,11 @@ struct LongPressGestureView: View {
         }
     }
 
-    /// A single recorded gesture state transition, displayed in the event log.
-    ///
-    /// Each event captures the state, the touch location in screen coordinates,
-    /// the number of active touches, and the wall-clock time it occurred.
-    /// The `isExpiring` flag drives a fade-out animation before the event is removed.
-    struct GestureEvent: Identifiable {
-        let id = UUID()
-        /// The gesture phase at the time of this event.
-        let state: GestureState
-        /// The centroid of all touches in screen coordinates (`recognizer.location(in: nil)`).
-        let location: CGPoint
-        /// The number of fingers on screen when this event was recorded.
-        let touches: Int
-        /// The wall-clock time this event was recorded.
-        let timestamp: Date
-        /// When `true`, the event row animates to zero opacity before being removed from the list.
-        var isExpiring = false
-    }
-
     /// The view model that owns all mutable state for `LongPressGestureView`.
     ///
     /// Configuration properties (`minimumPressDuration`, `numberOfTouchesRequired`,
-    /// `numberOfTapsRequired`) drive the gesture recognizer setup. The `gestureEvents`
-    /// array feeds the event log. Calling ``addEvent(state:location:touches:)``
-    /// appends a new event and schedules its automatic removal after 3 seconds.
+    /// `numberOfTapsRequired`) drive the gesture recognizer setup. The remaining properties
+    /// track the current gesture state, touch location, and finger count for the info panel.
     @Observable
     class ViewModel {
         /// The minimum duration (in seconds) the user must press before the gesture is recognized.
@@ -93,35 +72,10 @@ struct LongPressGestureView: View {
         /// The most recent gesture state, used to color the rectangle.
         /// `nil` means the gesture is idle (rectangle shows its default blue color).
         var currentState: GestureState?
-        /// The chronological list of gesture events displayed in the event log.
-        var gestureEvents: [GestureEvent] = []
-
-        /// Records a new gesture event and schedules its removal after 3 seconds.
-        ///
-        /// The event is appended to ``gestureEvents`` immediately. After a 3-second delay,
-        /// the event's `isExpiring` flag is set to `true` inside a 0.5-second ease-out
-        /// animation. Once the animation completes, the event is removed from the array.
-        ///
-        /// - Parameters:
-        ///   - state: The gesture phase (began, changed, or ended).
-        ///   - location: The centroid of touches in screen coordinates.
-        ///   - touches: The number of active fingers.
-        func addEvent(state: GestureState, location: CGPoint, touches: Int) {
-            currentState = state
-            let event = GestureEvent(state: state, location: location, touches: touches, timestamp: .now)
-            gestureEvents.append(event)
-            let eventID = event.id
-
-            Task {
-                try? await Task.sleep(for: .seconds(3))
-                guard let index = gestureEvents.firstIndex(where: { $0.id == eventID }) else { return }
-                withAnimation(.easeOut(duration: 0.5)) {
-                    gestureEvents[index].isExpiring = true
-                } completion: { [self] in
-                    gestureEvents.removeAll { $0.id == eventID }
-                }
-            }
-        }
+        /// The centroid of all touches in screen coordinates (`recognizer.location(in: nil)`).
+        var gestureLocation: CGPoint = .zero
+        /// The number of fingers on screen during the gesture.
+        var numberOfTouches: Int = 0
     }
 
     @State private var viewModel = ViewModel()
@@ -130,7 +84,7 @@ struct LongPressGestureView: View {
         VStack(spacing: 0) {
             ConfigurationSection(viewModel: viewModel)
             GesturePlayground(viewModel: viewModel)
-            EventLog(viewModel: viewModel)
+            InfoPanel(viewModel: viewModel)
         }
         .navigationTitle(String(localized: "Long Press Gesture"))
     }
@@ -183,7 +137,7 @@ struct LongPressGestureView: View {
     /// the finger moves, red when lifted, and blue when idle.
     ///
     /// A `MultiFingerLongPressGesture` is attached to the entire area. Its three callbacks
-    /// (`onBegan`, `onChanged`, `onEnded`) each record an event via the view model.
+    /// (`onBegan`, `onChanged`, `onEnded`) each update the view model's state and location.
     private struct GesturePlayground: View {
 
         var viewModel: ViewModel
@@ -212,93 +166,53 @@ struct LongPressGestureView: View {
                         numberOfTapsRequired: viewModel.numberOfTapsRequired
                     )
                     .onBegan { recognizer in
-                        viewModel.addEvent(
-                            state: .began,
-                            location: recognizer.location(in: nil),
-                            touches: recognizer.numberOfTouches
-                        )
+                        viewModel.currentState = .began
+                        viewModel.gestureLocation = recognizer.location(in: nil)
+                        viewModel.numberOfTouches = recognizer.numberOfTouches
                     }
                     .onChanged { recognizer in
-                        viewModel.addEvent(
-                            state: .changed,
-                            location: recognizer.location(in: nil),
-                            touches: recognizer.numberOfTouches
-                        )
+                        viewModel.currentState = .changed
+                        viewModel.gestureLocation = recognizer.location(in: nil)
+                        viewModel.numberOfTouches = recognizer.numberOfTouches
                     }
                     .onEnded { recognizer in
-                        viewModel.addEvent(
-                            state: .ended,
-                            location: recognizer.location(in: nil),
-                            touches: recognizer.numberOfTouches
-                        )
-                        viewModel.currentState = nil
+                        viewModel.currentState = .ended
+                        viewModel.gestureLocation = recognizer.location(in: nil)
+                        viewModel.numberOfTouches = recognizer.numberOfTouches
                     }
                 )
         }
     }
 
-    // MARK: - Event Log
+    // MARK: - Info Panel
 
-    /// A scrolling list of recent gesture events that automatically removes entries after 3 seconds.
+    /// A read-only display of the current gesture state, touch location, and finger count.
     ///
-    /// Each row displays:
-    /// - A monospaced timestamp (`HH:mm:ss.SSS`).
-    /// - The gesture state name, colored to match (yellow/green/red).
-    /// - The touch centroid coordinates.
-    /// - The number of active fingers.
-    ///
-    /// New events are appended at the bottom and the list auto-scrolls to keep the latest
-    /// entry visible. After 3 seconds, each row fades out over 0.5 seconds and is removed
-    /// from the backing array. When empty, a `ContentUnavailableView` placeholder is shown.
-    private struct EventLog: View {
+    /// Shows three `LabeledContent` rows updated in real time during the long press gesture:
+    /// - **State**: The localized gesture phase name (Idle, Began, Changed, or Ended).
+    /// - **Location**: The centroid of touches in screen coordinates as an (x, y) offset in points.
+    /// - **Touches**: The number of fingers currently on screen.
+    private struct InfoPanel: View {
 
         var viewModel: ViewModel
 
-        private static let timeFormatter: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "HH:mm:ss.SSS"
-            return formatter
-        }()
-
         var body: some View {
-            ScrollViewReader { proxy in
-                List(viewModel.gestureEvents) { event in
-                    HStack {
-                        Text(Self.timeFormatter.string(from: event.timestamp))
-                            .font(.caption.monospaced())
-                            .foregroundStyle(.secondary)
-                        Text(event.state.localizedString)
-                            .font(.callout.bold())
-                            .foregroundStyle(event.state.color)
-                        Spacer()
-                        Text("(\(event.location.x, format: .number.precision(.fractionLength(1))), \(event.location.y, format: .number.precision(.fractionLength(1))))")
-                            .font(.caption.monospaced())
-                            .foregroundStyle(.secondary)
-                        Text("\(event.touches) finger(s)")
-                            .font(.callout)
-                    }
-                    .id(event.id)
-                    .opacity(event.isExpiring ? 0 : 1)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel(Text("\(event.state.localizedString) at \(Self.timeFormatter.string(from: event.timestamp)), \(event.touches) finger(s)"))
-                }
-                .listStyle(.plain)
-                .overlay {
-                    if viewModel.gestureEvents.isEmpty {
-                        ContentUnavailableView("No Long Press Events",
-                                               systemImage: "hand.tap",
-                                               description: Text("Long press the rectangle above to log events."))
-                    }
-                }
-                .onChange(of: viewModel.gestureEvents.last?.id) {
-                    guard let lastID = viewModel.gestureEvents.last?.id else { return }
-                    withAnimation {
-                        proxy.scrollTo(lastID, anchor: .bottom)
-                    }
+            Form {
+                Section(String(localized: "Gesture Info")) {
+                    LabeledContent(String(localized: "State"),
+                                   value: viewModel.currentState?.localizedString ?? String(localized: "Idle"))
+                    LabeledContent(String(localized: "Location"),
+                                   value: String(format: "(%.1f, %.1f)",
+                                                 viewModel.gestureLocation.x,
+                                                 viewModel.gestureLocation.y))
+                    LabeledContent(String(localized: "Touches"),
+                                   value: "\(viewModel.numberOfTouches)")
                 }
             }
-            .frame(maxHeight: 250)
-            .accessibilityLabel(String(localized: "Gesture event log"))
+            .formStyle(.grouped)
+            .frame(height: 200)
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(String(localized: "Gesture info"))
         }
     }
 }
