@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		160D21512F4BBD3500E6AA1D /* UIKitGesturesForSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 160D21502F4BBD3500E6AA1D /* UIKitGesturesForSwiftUI */; };
 		16272EB12F45263B00FDF7D4 /* UIKitGesturesForSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 16272EB02F45263B00FDF7D4 /* UIKitGesturesForSwiftUI */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16272EB12F45263B00FDF7D4 /* UIKitGesturesForSwiftUI in Frameworks */,
+				160D21512F4BBD3500E6AA1D /* UIKitGesturesForSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +120,7 @@
 			name = UIKitGesturesForSwiftUIPlayground;
 			packageProductDependencies = (
 				16272EB02F45263B00FDF7D4 /* UIKitGesturesForSwiftUI */,
+				160D21502F4BBD3500E6AA1D /* UIKitGesturesForSwiftUI */,
 			);
 			productName = UIKitGesturesForSwiftUIPlayground;
 			productReference = 16272E7F2F4523D100FDF7D4 /* UIKitGesturesForSwiftUIPlayground.app */;
@@ -202,7 +205,7 @@
 			mainGroup = 16272E762F4523D100FDF7D4;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				16272EAF2F45263B00FDF7D4 /* XCLocalSwiftPackageReference "../../UIKitGesturesForSwiftUI/UIKitGesturesForSwiftUI" */,
+				160D214F2F4BBD3500E6AA1D /* XCRemoteSwiftPackageReference "UIKitGesturesForSwiftUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 16272E802F4523D100FDF7D4 /* Products */;
@@ -325,6 +328,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -339,6 +343,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
 			};
 			name = Debug;
 		};
@@ -383,6 +388,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -395,6 +401,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -408,6 +415,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2QJXWH9SJA;
 				ENABLE_PREVIEWS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -425,6 +433,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -440,6 +449,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2QJXWH9SJA;
 				ENABLE_PREVIEWS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -457,6 +467,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -588,14 +599,23 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		16272EAF2F45263B00FDF7D4 /* XCLocalSwiftPackageReference "../../UIKitGesturesForSwiftUI/UIKitGesturesForSwiftUI" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../UIKitGesturesForSwiftUI/UIKitGesturesForSwiftUI;
+/* Begin XCRemoteSwiftPackageReference section */
+		160D214F2F4BBD3500E6AA1D /* XCRemoteSwiftPackageReference "UIKitGesturesForSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jacobvanorder/UIKitGesturesForSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		160D21502F4BBD3500E6AA1D /* UIKitGesturesForSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 160D214F2F4BBD3500E6AA1D /* XCRemoteSwiftPackageReference "UIKitGesturesForSwiftUI" */;
+			productName = UIKitGesturesForSwiftUI;
+		};
 		16272EB02F45263B00FDF7D4 /* UIKitGesturesForSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = UIKitGesturesForSwiftUI;

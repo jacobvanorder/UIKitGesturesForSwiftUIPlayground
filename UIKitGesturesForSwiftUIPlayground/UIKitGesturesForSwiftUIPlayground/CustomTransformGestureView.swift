@@ -63,6 +63,7 @@ struct CustomTransformGestureView: View {
     /// combined transform (translation, scale, rotation), and the real-time values for the
     /// info panel.
     @Observable
+    @MainActor
     class ViewModel {
         /// The most recent gesture state, used to color the rectangle.
         /// `nil` means the gesture is idle (rectangle shows its default blue color).
@@ -168,24 +169,6 @@ struct CustomTransformGestureView: View {
                             viewModel.gestureStartScale = viewModel.currentScale
                             viewModel.gestureStartRotation = viewModel.currentRotation
                             viewModel.currentState = .began
-                            viewModel.translation = recognizer.translation
-                            viewModel.scale = recognizer.scale
-                            viewModel.rotation = recognizer.rotation
-                        }
-                        .onChanged { recognizer in
-                            viewModel.currentTranslation = CGSize(
-                                width: viewModel.gestureStartTranslation.width + recognizer.translation.x,
-                                height: viewModel.gestureStartTranslation.height + recognizer.translation.y
-                            )
-                            viewModel.currentScale = viewModel.gestureStartScale * recognizer.scale
-                            viewModel.currentRotation = viewModel.gestureStartRotation + recognizer.rotation
-                            viewModel.currentState = .changed
-                            viewModel.translation = recognizer.translation
-                            viewModel.scale = recognizer.scale
-                            viewModel.rotation = recognizer.rotation
-                        }
-                        .onEnded { recognizer in
-                            viewModel.currentState = .ended
                             viewModel.translation = recognizer.translation
                             viewModel.scale = recognizer.scale
                             viewModel.rotation = recognizer.rotation

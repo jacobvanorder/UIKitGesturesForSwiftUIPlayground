@@ -1,0 +1,15 @@
+{
+  "originHash" : "74e5441a56d69bf519969cf96cfb2290994e71ac9b8dd87cc1473e693c6ba007",
+  "pins" : [
+    {
+      "identity" : "uikitgesturesforswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jacobvanorder/UIKitGesturesForSwiftUI",
+      "state" : {
+        "revision" : "f28ce4eab92539792e3a702c134ea09927339c18",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
