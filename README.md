@@ -1,5 +1,7 @@
 # UIKitGesturesForSwiftUI Playground
 
+![playground](./playground.gif)
+
 A sample iOS app that demonstrates every gesture provided by the [UIKitGesturesForSwiftUI](https://github.com/jacobvanorder/UIKitGesturesForSwiftUI) library. Each gesture has its own interactive screen where you can adjust configuration, perform the gesture on a target rectangle, and observe real-time feedback.
 
 Made by Jacob Van Order who you can find on Mastodon [here](https://mastodon.social/@jacobvo). Reach out if you have any feedback!
